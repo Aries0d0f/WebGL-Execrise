@@ -37,6 +37,8 @@ const loader = () => {
     document.querySelector("#gl-playground"),
     Playground.getShaderSource('vertex-shader')
   );
+
+  window.$GL = playground.$gl;
 };
 
 window.onload = () => loader();
