@@ -1,44 +1,26 @@
 class Playground {
-  constructor(canvasDOM, vertexShader, fragmentShader) {
+  constructor(canvasDOM, fragmentShader, appShader) {
     this.canvasDOM = canvasDOM;
-    this.$gl = this.canvasDOM.getContext("webgl");
-    this.vertexShader = this.shader(this.$gl, this.$gl.VERTEX_SHADER, vertexShader);
-    this.fragmentShader = this.shader(this.$gl, this.$gl.FRAGMENT_SHADER, fragmentShader);
-
-    this.init();
+    this.$glsl = new GlslCanvas(this.canvasDOM);
+    this.$glsl.load(fragmentShader);
+    this.$glsl.load(appShader);
+    
+    this.canvasDOM.style.width = '100%';
+    this.canvasDOM.style.height = '100%';
   }
 
-  static getShaderSource(DOMId) {
-    return document.getElementById(DOMId).textContent;
-  }
-
-  shader(glContext, type, source) {
-    const _shader = glContext.createShader(type);
-    glContext.shaderSource(_shader, source);
-    glContext.compileShader(_shader);
-
-    return _shader;
-  }
-
-  init() {
-    this.$gl.clearColor(0, 0, 0, 1);
-    this.$gl.clear(this.$gl.COLOR_BUFFER_BIT);
-
-    this.$program = this.$gl.createProgram();
-    this.$gl.attachShader(this.$program, this.vertexShader);
-    this.$gl.attachShader(this.$program, this.fragmentShader);
-    this.$gl.linkProgram(this.$program);
-    this.$gl.useProgram(this.$program);
+  static async shader(DOMId) {
+    const res = await axios.get(document.getElementById(DOMId).src);
+    return res.data;
   }
 }
 
-const loader = () => {
-  const playground = new Playground(
+const loader = async () => {
+  new Playground(
     document.querySelector("#gl-playground"),
-    Playground.getShaderSource('vertex-shader')
+    await Playground.shader('fragment-shader'),
+    await Playground.shader('cube-shader')
   );
-
-  window.$GL = playground.$gl;
 };
 
 window.onload = () => loader();
