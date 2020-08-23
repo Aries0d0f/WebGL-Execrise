@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base href="/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebGL Practice</title>
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js" async></script>
+  <script src="/src/glsl.js" async></script>
 </head>
 <body>
-  
+  <canvas id="gl-playground"></canvas>
+  <script id="fragment-shader" type="x-shader/x-fragment" src="/src/shader/fragment.glsl"></script>
+  <script id="cube-shader" type="x-shader/x-fragment" src="/src/shader/cube.frag.glsl"></script>
+  <script src="/src/app.js"></script>
 </body>
 </html>
